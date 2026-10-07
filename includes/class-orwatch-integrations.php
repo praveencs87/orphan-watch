@@ -2,7 +2,7 @@
 /**
  * Site Health integration.
  *
- * @package PluginOrphanWatch
+ * @package OrphanWatch
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -27,7 +27,7 @@ final class ORWATCH_Integrations {
 	 */
 	public static function register_site_health_test( $tests ) {
 		$tests['direct']['orwatch_abandoned_plugins'] = array(
-			'label' => __( 'Abandoned plugins', 'plugin-orphan-watch' ),
+			'label' => __( 'Abandoned plugins', 'orphan-watch' ),
 			'test'  => array( __CLASS__, 'site_health_test' ),
 		);
 		return $tests;
@@ -43,25 +43,25 @@ final class ORWATCH_Integrations {
 		$url     = ORWATCH_Admin::page_url();
 
 		$result = array(
-			'label'       => __( 'No abandoned plugins detected', 'plugin-orphan-watch' ),
+			'label'       => __( 'No abandoned plugins detected', 'orphan-watch' ),
 			'status'      => 'good',
 			'badge'       => array(
-				'label' => __( 'Security', 'plugin-orphan-watch' ),
+				'label' => __( 'Security', 'orphan-watch' ),
 				'color' => 'blue',
 			),
-			'description' => '<p>' . esc_html__( 'Plugin Orphan Watch did not find closed or abandoned plugins.', 'plugin-orphan-watch' ) . '</p>',
+			'description' => '<p>' . esc_html__( 'Orphan Watch did not find closed or abandoned plugins.', 'orphan-watch' ) . '</p>',
 			'actions'     => '',
 			'test'        => 'orwatch_abandoned_plugins',
 		);
 
 		if ( 0 === $summary['scanned'] ) {
 			$result['status']      = 'recommended';
-			$result['label']       = __( 'Your plugins have not been checked for abandonment', 'plugin-orphan-watch' );
-			$result['description'] = '<p>' . esc_html__( 'Run a scan to find plugins that are no longer maintained.', 'plugin-orphan-watch' ) . '</p>';
-			$result['actions']     = '<p><a href="' . esc_url( $url ) . '">' . esc_html__( 'Scan plugins', 'plugin-orphan-watch' ) . '</a></p>';
+			$result['label']       = __( 'Your plugins have not been checked for abandonment', 'orphan-watch' );
+			$result['description'] = '<p>' . esc_html__( 'Run a scan to find plugins that are no longer maintained.', 'orphan-watch' ) . '</p>';
+			$result['actions']     = '<p><a href="' . esc_url( $url ) . '">' . esc_html__( 'Scan plugins', 'orphan-watch' ) . '</a></p>';
 		} elseif ( $summary['critical'] > 0 ) {
 			$result['status']      = 'critical';
-			$result['label']       = __( 'Closed or abandoned plugins are installed', 'plugin-orphan-watch' );
+			$result['label']       = __( 'Closed or abandoned plugins are installed', 'orphan-watch' );
 			$result['description'] = '<p>' . esc_html(
 				sprintf(
 					/* translators: %s: number of plugins */
@@ -69,15 +69,15 @@ final class ORWATCH_Integrations {
 						'%s plugin is closed or has not been updated in over two years. Unmaintained plugins are a common way sites get hacked.',
 						'%s plugins are closed or have not been updated in over two years. Unmaintained plugins are a common way sites get hacked.',
 						$summary['critical'],
-						'plugin-orphan-watch'
+						'orphan-watch'
 					),
 					number_format_i18n( $summary['critical'] )
 				)
 			) . '</p>';
-			$result['actions'] = '<p><a href="' . esc_url( $url ) . '">' . esc_html__( 'Review plugins', 'plugin-orphan-watch' ) . '</a></p>';
+			$result['actions'] = '<p><a href="' . esc_url( $url ) . '">' . esc_html__( 'Review plugins', 'orphan-watch' ) . '</a></p>';
 		} elseif ( $summary['warning'] > 0 ) {
 			$result['status']      = 'recommended';
-			$result['label']       = __( 'Some plugins look unmaintained', 'plugin-orphan-watch' );
+			$result['label']       = __( 'Some plugins look unmaintained', 'orphan-watch' );
 			$result['description'] = '<p>' . esc_html(
 				sprintf(
 					/* translators: %s: number of plugins */
@@ -85,12 +85,12 @@ final class ORWATCH_Integrations {
 						'%s plugin has not been updated for a year or is untested with current WordPress.',
 						'%s plugins have not been updated for a year or are untested with current WordPress.',
 						$summary['warning'],
-						'plugin-orphan-watch'
+						'orphan-watch'
 					),
 					number_format_i18n( $summary['warning'] )
 				)
 			) . '</p>';
-			$result['actions'] = '<p><a href="' . esc_url( $url ) . '">' . esc_html__( 'Review plugins', 'plugin-orphan-watch' ) . '</a></p>';
+			$result['actions'] = '<p><a href="' . esc_url( $url ) . '">' . esc_html__( 'Review plugins', 'orphan-watch' ) . '</a></p>';
 		}
 
 		return $result;

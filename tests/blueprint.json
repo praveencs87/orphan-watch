@@ -1,7 +1,7 @@
 {
 	"preferredVersions": { "php": "8.3", "wp": "latest" },
 	"steps": [
-		{ "step": "activatePlugin", "pluginPath": "plugin-orphan-watch/plugin-orphan-watch.php" },
-		{ "step": "runPHP", "code": "<?php require '/wordpress/wp-content/plugins/plugin-orphan-watch/tests/playground-test.php';" }
+		{ "step": "activatePlugin", "pluginPath": "orphan-watch/orphan-watch.php" },
+		{ "step": "runPHP", "code": "<?php require '/wordpress/wp-content/plugins/orphan-watch/tests/playground-test.php';" }
 	]
 }

@@ -2,7 +2,7 @@
 /**
  * Scanning + classification logic.
  *
- * @package PluginOrphanWatch
+ * @package OrphanWatch
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -32,51 +32,51 @@ final class ORWATCH_Scanner {
 	public static function statuses() {
 		return array(
 			'closed'     => array(
-				'label' => __( 'Closed', 'plugin-orphan-watch' ),
+				'label' => __( 'Closed', 'orphan-watch' ),
 				'level' => 'critical',
-				'help'  => __( 'Removed from WordPress.org (often for security or guideline reasons). It no longer receives updates.', 'plugin-orphan-watch' ),
+				'help'  => __( 'Removed from WordPress.org (often for security or guideline reasons). It no longer receives updates.', 'orphan-watch' ),
 				'rank'  => 0,
 			),
 			'abandoned'  => array(
-				'label' => __( 'Abandoned', 'plugin-orphan-watch' ),
+				'label' => __( 'Abandoned', 'orphan-watch' ),
 				'level' => 'critical',
-				'help'  => __( 'Not updated for over 2 years. Known issues will not be fixed.', 'plugin-orphan-watch' ),
+				'help'  => __( 'Not updated for over 2 years. Known issues will not be fixed.', 'orphan-watch' ),
 				'rank'  => 1,
 			),
 			'stale'      => array(
-				'label' => __( 'Stale', 'plugin-orphan-watch' ),
+				'label' => __( 'Stale', 'orphan-watch' ),
 				'level' => 'warning',
-				'help'  => __( 'Not updated for over a year.', 'plugin-orphan-watch' ),
+				'help'  => __( 'Not updated for over a year.', 'orphan-watch' ),
 				'rank'  => 2,
 			),
 			'untested'   => array(
-				'label' => __( 'Untested', 'plugin-orphan-watch' ),
+				'label' => __( 'Untested', 'orphan-watch' ),
 				'level' => 'warning',
-				'help'  => __( 'The author has not tested it with recent WordPress releases.', 'plugin-orphan-watch' ),
+				'help'  => __( 'The author has not tested it with recent WordPress releases.', 'orphan-watch' ),
 				'rank'  => 3,
 			),
 			'error'      => array(
-				'label' => __( 'Check failed', 'plugin-orphan-watch' ),
+				'label' => __( 'Check failed', 'orphan-watch' ),
 				'level' => 'info',
-				'help'  => __( 'WordPress.org could not be reached. Try again later.', 'plugin-orphan-watch' ),
+				'help'  => __( 'WordPress.org could not be reached. Try again later.', 'orphan-watch' ),
 				'rank'  => 4,
 			),
 			'not_listed' => array(
-				'label' => __( 'Not on WordPress.org', 'plugin-orphan-watch' ),
+				'label' => __( 'Not on WordPress.org', 'orphan-watch' ),
 				'level' => 'info',
-				'help'  => __( 'Not found in the WordPress.org directory. It may be a premium or custom plugin, or one that was removed. Check its source.', 'plugin-orphan-watch' ),
+				'help'  => __( 'Not found in the WordPress.org directory. It may be a premium or custom plugin, or one that was removed. Check its source.', 'orphan-watch' ),
 				'rank'  => 5,
 			),
 			'external'   => array(
-				'label' => __( 'Self-updating', 'plugin-orphan-watch' ),
+				'label' => __( 'Self-updating', 'orphan-watch' ),
 				'level' => 'info',
-				'help'  => __( 'Updates come from its own server (Update URI), so it cannot be checked here.', 'plugin-orphan-watch' ),
+				'help'  => __( 'Updates come from its own server (Update URI), so it cannot be checked here.', 'orphan-watch' ),
 				'rank'  => 6,
 			),
 			'ok'         => array(
-				'label' => __( 'Healthy', 'plugin-orphan-watch' ),
+				'label' => __( 'Healthy', 'orphan-watch' ),
 				'level' => 'ok',
-				'help'  => __( 'Recently updated and tested with a current WordPress version.', 'plugin-orphan-watch' ),
+				'help'  => __( 'Recently updated and tested with a current WordPress version.', 'orphan-watch' ),
 				'rank'  => 7,
 			),
 		);
@@ -189,7 +189,7 @@ final class ORWATCH_Scanner {
 	public static function scan( $plugin_file ) {
 		$installed = self::get_installed();
 		if ( ! isset( $installed[ $plugin_file ] ) ) {
-			return new WP_Error( 'orwatch_unknown_plugin', __( 'That plugin is not installed.', 'plugin-orphan-watch' ) );
+			return new WP_Error( 'orwatch_unknown_plugin', __( 'That plugin is not installed.', 'orphan-watch' ) );
 		}
 
 		$data   = $installed[ $plugin_file ];

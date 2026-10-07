@@ -2,7 +2,7 @@
 /**
  * Remove stored data on uninstall.
  *
- * @package PluginOrphanWatch
+ * @package OrphanWatch
  */
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;

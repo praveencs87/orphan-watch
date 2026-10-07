@@ -2,7 +2,7 @@
 /**
  * Admin screen, AJAX endpoints and dashboard widget.
  *
- * @package PluginOrphanWatch
+ * @package OrphanWatch
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 final class ORWATCH_Admin {
 
-	const PAGE_SLUG  = 'plugin-orphan-watch';
+	const PAGE_SLUG  = 'orphan-watch';
 	const CAPABILITY = 'activate_plugins';
 
 	/**
@@ -48,8 +48,8 @@ final class ORWATCH_Admin {
 	 */
 	public static function register_menu() {
 		self::$hook_suffix = (string) add_plugins_page(
-			__( 'Plugin Orphan Watch', 'plugin-orphan-watch' ),
-			__( 'Orphan Watch', 'plugin-orphan-watch' ),
+			__( 'Orphan Watch', 'orphan-watch' ),
+			__( 'Orphan Watch', 'orphan-watch' ),
 			self::CAPABILITY,
 			self::PAGE_SLUG,
 			array( __CLASS__, 'render_page' )
@@ -65,7 +65,7 @@ final class ORWATCH_Admin {
 	public static function action_links( $links ) {
 		array_unshift(
 			$links,
-			'<a href="' . esc_url( self::page_url() ) . '">' . esc_html__( 'Scan plugins', 'plugin-orphan-watch' ) . '</a>'
+			'<a href="' . esc_url( self::page_url() ) . '">' . esc_html__( 'Scan plugins', 'orphan-watch' ) . '</a>'
 		);
 		return $links;
 	}
@@ -95,11 +95,11 @@ final class ORWATCH_Admin {
 				'nonce'   => wp_create_nonce( 'orwatch_ajax' ),
 				'i18n'    => array(
 					/* translators: 1: number scanned, 2: total number of plugins */
-					'progress' => __( 'Scanned %1$s of %2$s…', 'plugin-orphan-watch' ),
-					'done'     => __( 'Scan complete.', 'plugin-orphan-watch' ),
-					'scan'     => __( 'Scan all plugins', 'plugin-orphan-watch' ),
-					'scanning' => __( 'Scanning…', 'plugin-orphan-watch' ),
-					'failed'   => __( 'Request failed. Please try again.', 'plugin-orphan-watch' ),
+					'progress' => __( 'Scanned %1$s of %2$s…', 'orphan-watch' ),
+					'done'     => __( 'Scan complete.', 'orphan-watch' ),
+					'scan'     => __( 'Scan all plugins', 'orphan-watch' ),
+					'scanning' => __( 'Scanning…', 'orphan-watch' ),
+					'failed'   => __( 'Request failed. Please try again.', 'orphan-watch' ),
 				),
 			)
 		);
@@ -111,7 +111,7 @@ final class ORWATCH_Admin {
 	private static function check_ajax() {
 		check_ajax_referer( 'orwatch_ajax', '_wpnonce' );
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_send_json_error( array( 'message' => __( 'You are not allowed to do that.', 'plugin-orphan-watch' ) ), 403 );
+			wp_send_json_error( array( 'message' => __( 'You are not allowed to do that.', 'orphan-watch' ) ), 403 );
 		}
 	}
 
@@ -124,7 +124,7 @@ final class ORWATCH_Admin {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified in check_ajax().
 		$plugin_file = isset( $_POST['plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin'] ) ) : '';
 		if ( '' === $plugin_file || ! array_key_exists( $plugin_file, ORWATCH_Scanner::get_installed() ) ) {
-			wp_send_json_error( array( 'message' => __( 'Unknown plugin.', 'plugin-orphan-watch' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Unknown plugin.', 'orphan-watch' ) ), 400 );
 		}
 		return $plugin_file;
 	}
@@ -179,24 +179,24 @@ final class ORWATCH_Admin {
 				<span class="orwatch-muted">
 					<?php
 					/* translators: %s: plugin version number */
-					echo esc_html( sprintf( __( 'v%s', 'plugin-orphan-watch' ), $data['Version'] ) );
+					echo esc_html( sprintf( __( 'v%s', 'orphan-watch' ), $data['Version'] ) );
 					?>
 					<?php if ( is_plugin_active( $plugin_file ) ) : ?>
-						&middot; <?php esc_html_e( 'Active', 'plugin-orphan-watch' ); ?>
+						&middot; <?php esc_html_e( 'Active', 'orphan-watch' ); ?>
 					<?php else : ?>
-						&middot; <?php esc_html_e( 'Inactive', 'plugin-orphan-watch' ); ?>
+						&middot; <?php esc_html_e( 'Inactive', 'orphan-watch' ); ?>
 					<?php endif; ?>
 				</span>
 			</td>
 			<td>
 				<?php if ( $ignored ) : ?>
-					<span class="orwatch-badge orwatch-badge--ignored"><?php esc_html_e( 'Ignored', 'plugin-orphan-watch' ); ?></span>
+					<span class="orwatch-badge orwatch-badge--ignored"><?php esc_html_e( 'Ignored', 'orphan-watch' ); ?></span>
 				<?php elseif ( $status ) : ?>
 					<span class="orwatch-badge orwatch-badge--<?php echo esc_attr( $status['level'] ); ?>" title="<?php echo esc_attr( $status['help'] ); ?>">
 						<?php echo esc_html( $status['label'] ); ?>
 					</span>
 				<?php else : ?>
-					<span class="orwatch-badge orwatch-badge--none"><?php esc_html_e( 'Not scanned', 'plugin-orphan-watch' ); ?></span>
+					<span class="orwatch-badge orwatch-badge--none"><?php esc_html_e( 'Not scanned', 'orphan-watch' ); ?></span>
 				<?php endif; ?>
 			</td>
 			<td>
@@ -206,7 +206,7 @@ final class ORWATCH_Admin {
 						'<span title="%1$s">%2$s</span>',
 						esc_attr( wp_date( get_option( 'date_format' ), (int) $result['last_updated'] ) ),
 						/* translators: %s: human readable time difference, e.g. "2 years" */
-						esc_html( sprintf( __( '%s ago', 'plugin-orphan-watch' ), human_time_diff( (int) $result['last_updated'] ) ) )
+						esc_html( sprintf( __( '%s ago', 'orphan-watch' ), human_time_diff( (int) $result['last_updated'] ) ) )
 					);
 				} else {
 					echo '&mdash;';
@@ -233,9 +233,9 @@ final class ORWATCH_Admin {
 				?>
 			</td>
 			<td class="orwatch-col-actions">
-				<button type="button" class="button-link orwatch-rescan"><?php esc_html_e( 'Re-scan', 'plugin-orphan-watch' ); ?></button>
+				<button type="button" class="button-link orwatch-rescan"><?php esc_html_e( 'Re-scan', 'orphan-watch' ); ?></button>
 				<button type="button" class="button-link orwatch-ignore">
-					<?php echo $ignored ? esc_html__( 'Stop ignoring', 'plugin-orphan-watch' ) : esc_html__( 'Ignore', 'plugin-orphan-watch' ); ?>
+					<?php echo $ignored ? esc_html__( 'Stop ignoring', 'orphan-watch' ) : esc_html__( 'Ignore', 'orphan-watch' ); ?>
 				</button>
 			</td>
 		</tr>
@@ -287,19 +287,19 @@ final class ORWATCH_Admin {
 		$summary = ORWATCH_Scanner::summary();
 		?>
 		<div class="wrap orwatch-wrap">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Plugin Orphan Watch', 'plugin-orphan-watch' ); ?></h1>
-			<button type="button" class="page-title-action" id="orwatch-scan"><?php esc_html_e( 'Scan all plugins', 'plugin-orphan-watch' ); ?></button>
+			<h1 class="wp-heading-inline"><?php esc_html_e( 'Orphan Watch', 'orphan-watch' ); ?></h1>
+			<button type="button" class="page-title-action" id="orwatch-scan"><?php esc_html_e( 'Scan all plugins', 'orphan-watch' ); ?></button>
 			<hr class="wp-header-end">
 
 			<p class="description">
-				<?php esc_html_e( 'Checks every installed plugin against the WordPress.org directory and flags the ones that are closed, abandoned or no longer tested with current WordPress.', 'plugin-orphan-watch' ); ?>
+				<?php esc_html_e( 'Checks every installed plugin against the WordPress.org directory and flags the ones that are closed, abandoned or no longer tested with current WordPress.', 'orphan-watch' ); ?>
 			</p>
 
 			<div class="orwatch-summary" id="orwatch-summary">
-				<div class="orwatch-card orwatch-card--critical"><span class="orwatch-card__num"><?php echo esc_html( number_format_i18n( $summary['critical'] ) ); ?></span><?php esc_html_e( 'Critical', 'plugin-orphan-watch' ); ?></div>
-				<div class="orwatch-card orwatch-card--warning"><span class="orwatch-card__num"><?php echo esc_html( number_format_i18n( $summary['warning'] ) ); ?></span><?php esc_html_e( 'Warnings', 'plugin-orphan-watch' ); ?></div>
-				<div class="orwatch-card orwatch-card--ok"><span class="orwatch-card__num"><?php echo esc_html( number_format_i18n( $summary['ok'] ) ); ?></span><?php esc_html_e( 'Healthy', 'plugin-orphan-watch' ); ?></div>
-				<div class="orwatch-card orwatch-card--none"><span class="orwatch-card__num"><?php echo esc_html( number_format_i18n( $summary['unscanned'] + $summary['info'] ) ); ?></span><?php esc_html_e( 'Unverified', 'plugin-orphan-watch' ); ?></div>
+				<div class="orwatch-card orwatch-card--critical"><span class="orwatch-card__num"><?php echo esc_html( number_format_i18n( $summary['critical'] ) ); ?></span><?php esc_html_e( 'Critical', 'orphan-watch' ); ?></div>
+				<div class="orwatch-card orwatch-card--warning"><span class="orwatch-card__num"><?php echo esc_html( number_format_i18n( $summary['warning'] ) ); ?></span><?php esc_html_e( 'Warnings', 'orphan-watch' ); ?></div>
+				<div class="orwatch-card orwatch-card--ok"><span class="orwatch-card__num"><?php echo esc_html( number_format_i18n( $summary['ok'] ) ); ?></span><?php esc_html_e( 'Healthy', 'orphan-watch' ); ?></div>
+				<div class="orwatch-card orwatch-card--none"><span class="orwatch-card__num"><?php echo esc_html( number_format_i18n( $summary['unscanned'] + $summary['info'] ) ); ?></span><?php esc_html_e( 'Unverified', 'orphan-watch' ); ?></div>
 			</div>
 
 			<p id="orwatch-progress" class="orwatch-progress" role="status" aria-live="polite"></p>
@@ -307,12 +307,12 @@ final class ORWATCH_Admin {
 			<table class="widefat striped orwatch-table" id="orwatch-table">
 				<thead>
 					<tr>
-						<th><?php esc_html_e( 'Plugin', 'plugin-orphan-watch' ); ?></th>
-						<th><?php esc_html_e( 'Status', 'plugin-orphan-watch' ); ?></th>
-						<th><?php esc_html_e( 'Last updated', 'plugin-orphan-watch' ); ?></th>
-						<th><?php esc_html_e( 'Tested up to', 'plugin-orphan-watch' ); ?></th>
-						<th><?php esc_html_e( 'Active installs', 'plugin-orphan-watch' ); ?></th>
-						<th><?php esc_html_e( 'Actions', 'plugin-orphan-watch' ); ?></th>
+						<th><?php esc_html_e( 'Plugin', 'orphan-watch' ); ?></th>
+						<th><?php esc_html_e( 'Status', 'orphan-watch' ); ?></th>
+						<th><?php esc_html_e( 'Last updated', 'orphan-watch' ); ?></th>
+						<th><?php esc_html_e( 'Tested up to', 'orphan-watch' ); ?></th>
+						<th><?php esc_html_e( 'Active installs', 'orphan-watch' ); ?></th>
+						<th><?php esc_html_e( 'Actions', 'orphan-watch' ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -345,16 +345,16 @@ final class ORWATCH_Admin {
 	private static function render_pro_box() {
 		?>
 		<div class="orwatch-pro">
-			<h2><?php esc_html_e( 'Want it to watch your site for you?', 'plugin-orphan-watch' ); ?></h2>
-			<p><?php esc_html_e( 'Orphan Watch Pro runs in the background and tells you the moment a plugin becomes a risk:', 'plugin-orphan-watch' ); ?></p>
+			<h2><?php esc_html_e( 'Want it to watch your site for you?', 'orphan-watch' ); ?></h2>
+			<p><?php esc_html_e( 'Orphan Watch Pro runs in the background and tells you the moment a plugin becomes a risk:', 'orphan-watch' ); ?></p>
 			<ul>
-				<li><?php esc_html_e( 'Scheduled scans (daily or weekly)', 'plugin-orphan-watch' ); ?></li>
-				<li><?php esc_html_e( 'Email and Slack alerts when a plugin is closed or abandoned', 'plugin-orphan-watch' ); ?></li>
-				<li><?php esc_html_e( 'Known-vulnerability data for each plugin', 'plugin-orphan-watch' ); ?></li>
-				<li><?php esc_html_e( 'Suggested maintained alternatives', 'plugin-orphan-watch' ); ?></li>
-				<li><?php esc_html_e( 'CSV / PDF reports and multisite support', 'plugin-orphan-watch' ); ?></li>
+				<li><?php esc_html_e( 'Scheduled scans (daily or weekly)', 'orphan-watch' ); ?></li>
+				<li><?php esc_html_e( 'Email and Slack alerts when a plugin is closed or abandoned', 'orphan-watch' ); ?></li>
+				<li><?php esc_html_e( 'Known-vulnerability data for each plugin', 'orphan-watch' ); ?></li>
+				<li><?php esc_html_e( 'Suggested maintained alternatives', 'orphan-watch' ); ?></li>
+				<li><?php esc_html_e( 'CSV / PDF reports and multisite support', 'orphan-watch' ); ?></li>
 			</ul>
-			<p><a class="button button-primary" href="<?php echo esc_url( orwatch_upgrade_url( 'admin-page' ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Learn about Pro', 'plugin-orphan-watch' ); ?></a></p>
+			<p><a class="button button-primary" href="<?php echo esc_url( orwatch_upgrade_url( 'admin-page' ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Learn about Pro', 'orphan-watch' ); ?></a></p>
 		</div>
 		<?php
 	}
@@ -368,7 +368,7 @@ final class ORWATCH_Admin {
 		}
 		wp_add_dashboard_widget(
 			'orwatch_dashboard_widget',
-			__( 'Plugin Orphan Watch', 'plugin-orphan-watch' ),
+			__( 'Orphan Watch', 'orphan-watch' ),
 			array( __CLASS__, 'render_widget' )
 		);
 	}
@@ -380,15 +380,15 @@ final class ORWATCH_Admin {
 		$summary = ORWATCH_Scanner::summary();
 
 		if ( 0 === $summary['scanned'] ) {
-			echo '<p>' . esc_html__( 'Your plugins have not been scanned yet.', 'plugin-orphan-watch' ) . '</p>';
+			echo '<p>' . esc_html__( 'Your plugins have not been scanned yet.', 'orphan-watch' ) . '</p>';
 		} elseif ( 0 === $summary['critical'] && 0 === $summary['warning'] ) {
-			echo '<p class="orwatch-widget-ok">' . esc_html__( 'No abandoned or outdated plugins found.', 'plugin-orphan-watch' ) . '</p>';
+			echo '<p class="orwatch-widget-ok">' . esc_html__( 'No abandoned or outdated plugins found.', 'orphan-watch' ) . '</p>';
 		} else {
 			echo '<p>';
 			echo esc_html(
 				sprintf(
 					/* translators: 1: number of critical plugins, 2: number of warning plugins */
-					__( '%1$s critical and %2$s warning plugin(s) need your attention.', 'plugin-orphan-watch' ),
+					__( '%1$s critical and %2$s warning plugin(s) need your attention.', 'orphan-watch' ),
 					number_format_i18n( $summary['critical'] ),
 					number_format_i18n( $summary['warning'] )
 				)
@@ -396,6 +396,6 @@ final class ORWATCH_Admin {
 			echo '</p>';
 		}
 
-		echo '<p><a class="button" href="' . esc_url( self::page_url() ) . '">' . esc_html__( 'Open Orphan Watch', 'plugin-orphan-watch' ) . '</a></p>';
+		echo '<p><a class="button" href="' . esc_url( self::page_url() ) . '">' . esc_html__( 'Open Orphan Watch', 'orphan-watch' ) . '</a></p>';
 	}
 }

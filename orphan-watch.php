@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       Plugin Orphan Watch
- * Plugin URI:        https://coderbunch.com/plugin-orphan-watch/
+ * Plugin Name:       Orphan Watch
+ * Plugin URI:        https://coderbunch.com/orphan-watch/
  * Description:       Find abandoned, closed and outdated plugins on your site before they become a security problem. Scans every installed plugin against WordPress.org.
  * Version:           1.0.0
  * Requires at least: 5.8
@@ -10,9 +10,9 @@
  * Author URI:        https://coderbunch.com/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       plugin-orphan-watch
+ * Text Domain:       orphan-watch
  *
- * @package PluginOrphanWatch
+ * @package OrphanWatch
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -26,7 +26,7 @@ define( 'ORWATCH_URL', plugin_dir_url( __FILE__ ) );
  * Where the "Pro" call-to-action points. Override with the `orwatch_upgrade_url` filter.
  */
 if ( ! defined( 'ORWATCH_UPGRADE_URL' ) ) {
-	define( 'ORWATCH_UPGRADE_URL', 'https://coderbunch.com/plugin-orphan-watch/pro/' );
+	define( 'ORWATCH_UPGRADE_URL', 'https://coderbunch.com/orphan-watch/pro/' );
 }
 
 require_once ORWATCH_DIR . 'includes/class-orwatch-scanner.php';

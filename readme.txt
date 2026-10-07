@@ -1,4 +1,4 @@
-=== Plugin Orphan Watch ===
+=== Orphan Watch ===
 Contributors: coderbunch
 Tags: security, plugins, abandoned plugins, maintenance, site health
 Requires at least: 5.8
@@ -14,7 +14,7 @@ Find abandoned, closed and outdated plugins on your site before they become a se
 
 Most hacked WordPress sites are compromised through a plugin that nobody has maintained for years. WordPress itself will happily keep running those plugins and will never warn you.
 
-**Plugin Orphan Watch** checks every plugin you have installed against the WordPress.org directory and tells you which ones are:
+**Orphan Watch** checks every plugin you have installed against the WordPress.org directory and tells you which ones are:
 
 * **Closed** - removed from WordPress.org (often for security reasons)
 * **Abandoned** - no update for more than 2 years
@@ -33,7 +33,7 @@ Features:
 
 = Orphan Watch Pro =
 
-Want it to watch your site for you? Pro adds scheduled scans, email and Slack alerts, known-vulnerability data, suggested alternatives and reports. [Learn more](https://coderbunch.com/plugin-orphan-watch/pro/)
+Want it to watch your site for you? Pro adds scheduled scans, email and Slack alerts, known-vulnerability data, suggested alternatives and reports. [Learn more](https://coderbunch.com/orphan-watch/pro/)
 
 = Developers =
 
@@ -47,7 +47,7 @@ Service provided by WordPress.org: [Privacy policy](https://wordpress.org/about/
 
 == Installation ==
 
-1. Upload the `plugin-orphan-watch` folder to `/wp-content/plugins/`, or install it from Plugins > Add New.
+1. Upload the `orphan-watch` folder to `/wp-content/plugins/`, or install it from Plugins > Add New.
 2. Activate the plugin.
 3. Go to Plugins > Orphan Watch and click "Scan all plugins".
 
