@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.png binary
+/tests export-ignore
+/RELEASING.md export-ignore
+/.distignore export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
